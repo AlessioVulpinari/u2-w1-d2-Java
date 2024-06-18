@@ -1,14 +1,15 @@
 package alessiovulpinari.u2_w1_d2_Java.entities;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class Menu {
 
     List<Pizza> pizzas;

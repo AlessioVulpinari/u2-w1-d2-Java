@@ -1,17 +1,40 @@
 package alessiovulpinari.u2_w1_d2_Java;
 
-import alessiovulpinari.u2_w1_d2_Java.entities.Drink;
-import alessiovulpinari.u2_w1_d2_Java.entities.Menu;
-import alessiovulpinari.u2_w1_d2_Java.entities.Pizza;
-import alessiovulpinari.u2_w1_d2_Java.entities.Topping;
+import alessiovulpinari.u2_w1_d2_Java.entities.*;
+import alessiovulpinari.u2_w1_d2_Java.enums.OrderState;
 import alessiovulpinari.u2_w1_d2_Java.enums.Size;
+import alessiovulpinari.u2_w1_d2_Java.enums.TableState;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Configuration
+@PropertySource("application.properties")
 public class BeanConfiguration {
+
+    @Bean
+    public Topping ham() {
+        return new Topping("Ham", 0.99, 35);
+    }
+
+    @Bean
+    public Topping pineapple() {
+        return new Topping("Pineapple", 0.79, 24);
+    }
+
+    @Bean
+    public Topping salami() {
+        return new Topping("Salami", 0.99, 86);
+    }
+
+    @Bean
+    public Topping cheese() {
+        return new Topping("Cheese", 0.69, 92);
+    }
 
     @Bean
     public Pizza margherita() {
@@ -43,25 +66,6 @@ public class BeanConfiguration {
         return new Pizza("Salami Pizza XL", 88.99, 1660, Arrays.asList(salami(), salami()), Size.XL);
     }
 
-    @Bean
-    public Topping ham() {
-        return new Topping("Ham", 0.99, 35);
-    }
-
-    @Bean
-    public Topping pineapple() {
-        return new Topping("Pineapple", 0.79, 24);
-    }
-
-    @Bean
-    public Topping salami() {
-        return new Topping("Salami", 0.99, 86);
-    }
-
-    @Bean
-    public Topping cheese() {
-        return new Topping("Cheese", 0.69, 92);
-    }
 
     @Bean
     public Topping onion() {
@@ -84,9 +88,13 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public Menu menu() {
-        return new Menu(Arrays.asList(margherita(), margheritaXl(), hawaiianPizza(), hawaiianPizzaXl(), salamiPizza(), salamiPizzaXl()),
-                Arrays.asList(cheese(), ham(), onion(),
-                        pineapple(), salami()),Arrays.asList(lemonade(), water(), wine()));
+    public Table table() {
+        return new Table(1, 10, TableState.OCCUPIED);
+    }
+
+    @Bean
+    public Order order(@Value("${coperto.price}") double copertoPrice) {
+        return new Order(1, table(), Arrays.asList(margherita(), margheritaXl()), OrderState.SERVED, copertoPrice,
+                2, LocalDate.now());
     }
 }
